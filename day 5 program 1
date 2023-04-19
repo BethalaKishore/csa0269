@@ -1,0 +1,42 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
+int main() {
+    FILE *input_file = fopen("input.txt", "r");
+    if (input_file == NULL) {
+        perror("Error opening input file");
+        exit(1);
+    }
+
+    FILE *error_log_file = fopen("error_log.txt", "w");
+    if (error_log_file == NULL) {
+        perror("Error creating error log file");
+        exit(1);
+    }
+
+    char buffer[BUFFER_SIZE];
+    while (fgets(buffer, BUFFER_SIZE, input_file)) {
+        if (strstr(buffer, "error")) {
+            fputs(buffer, error_log_file);
+        }
+    }
+
+    fclose(input_file);
+    fclose(error_log_file);
+
+    error_log_file = fopen("error_log.txt", "r");
+    if (error_log_file == NULL) {
+        perror("Error opening error log file");
+        exit(1);
+    }
+
+    printf("Contents of error_log.txt:\n");
+    while (fgets(buffer, BUFFER_SIZE, error_log_file)) {
+        printf("%s", buffer);
+    }
+
+    fclose(error_log_file);
+
+    return 0;
+}
