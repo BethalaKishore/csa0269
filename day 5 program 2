@@ -1,0 +1,25 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+typedef struct {
+    int id;
+    char name[20];
+    float salary;
+} Employee;
+
+int main() {
+    FILE *file = fopen("data.bin", "rb");
+    if (file == NULL) {
+        perror("Error opening file");
+        exit(1);
+    }
+
+    Employee employee;
+    while (fread(&employee, sizeof(Employee), 1, file)) {
+        printf("ID: %d\nName: %s\nSalary: %.2f\n\n", employee.id, employee.name, employee.salary);
+    }
+
+    fclose(file);
+
+    return 0;
+}
